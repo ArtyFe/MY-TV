@@ -2,18 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio digital de Ntsame Ondo Arty Feriole, cheffe de projet digitale, contrôleuse de Gestion et formatrice à Port-Gentil, Gabon. Découvrez mes projets, compétences et contactez-moi !">
     <title>Arty Feriole - Portfolio Digital</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script>
-    (function() {
-      emailjs.init("vNmke9P5E2EOyP-1r"); // Remplace par ta clé publique EmailJS
-    })();
-  </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -182,7 +176,7 @@
     <section class="section contact-form-section" aria-label="Formulaire de contact dynamique">
         <div class="container">
             <h2 class="section-title">Exprimez votre besoin</h2>
-            <form id="dynamicContactForm" class="contact-form" autocomplete="on" style="max-width:500px;margin:0 auto;" method="POST" action="contact.php">
+            <form id="contact-form" class="contact-form" action="https://formspree.io/f/xvgaeejd" method="POST" style="max-width:500px;margin:0 auto;">
                 <div class="form-group">
                     <label for="name">Nom <span style="color:#ff6b6b;">*</span></label>
                     <input type="text" id="name" name="name" required placeholder="Votre nom complet">
@@ -204,6 +198,8 @@
                     <label for="details">Précisez votre besoin</label>
                     <textarea id="details" name="details" rows="3" placeholder="Détaillez votre projet ou demande..."></textarea>
                 </div>
+                <!-- Champ anti-spam (honeypot) -->
+                <input type="text" name="_gotcha" style="display:none">
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" style="width:100%;">Envoyer ma demande</button>
                 </div>
@@ -216,29 +212,30 @@
             interestSelect.addEventListener('change', function() {
               detailsGroup.style.display = (this.value === 'autre') ? 'block' : 'none';
             });
-            // Message de confirmation après soumission
-            const form = document.getElementById('dynamicContactForm');
-            const formMessage = document.getElementById('formMessage');
-            form.addEventListener('submit', function(e) {
+
+            // Soumission AJAX Formspree
+            const form = document.getElementById('contact-form');
+            form.addEventListener('submit', async function(e) {
               e.preventDefault();
               const formData = new FormData(form);
-              fetch('contact.php', {
-                method: 'POST',
-                body: formData
-              })
-              .then(response => response.text())
-              .then(result => {
-                if(result.trim() === 'success') {
+              const formMessage = document.getElementById('formMessage');
+              try {
+                const response = await fetch(form.action, {
+                  method: 'POST',
+                  body: formData,
+                  headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
                   formMessage.innerHTML = '<span style="color:#4ecdc4;font-weight:600;">Merci, votre demande a bien été envoyée !</span>';
                   form.reset();
                   detailsGroup.style.display = 'none';
                 } else {
-                  formMessage.innerHTML = '<span style="color:#ff6b6b;font-weight:600;">Une erreur est survenue, veuillez réessayer.</span>';
+                  const data = await response.json();
+                  formMessage.innerHTML = '<span style="color:#ff6b6b;font-weight:600;">Erreur : ' + (data.errors ? data.errors.map(e=>e.message).join(', ') : 'Une erreur est survenue.') + '</span>';
                 }
-              })
-              .catch(() => {
-                formMessage.innerHTML = '<span style="color:#ff6b6b;font-weight:600;">Une erreur est survenue, veuillez réessayer.</span>';
-              });
+              } catch (error) {
+                formMessage.innerHTML = '<span style="color:#ff6b6b;font-weight:600;">Erreur réseau. Veuillez réessayer.</span>';
+              }
             });
             </script>
         </div>
@@ -404,7 +401,7 @@
   <button id="share-btn" class="btn btn-secondary" style="font-size:1.1rem;padding:0.7em 1.5em;margin-bottom:1.2rem;cursor:pointer;">
     <i class="fas fa-share-alt"></i> Partager
   </button>
-  <button id="qrcode-btn" class="btn btn-secondary" style="font-size:1.1rem;padding:0.7em 1.5em;margin-left:1em;cursor:pointer;">
+  <button id="qrcode-btn" class="btn btn-secondary" style="font-size:1.1rem;padding:0.7em 1.5em;margin-left:1em;cursor:pointer;"></button>
     <i class="fas fa-qrcode"></i> QRCode
   </button>
   <div id="qrcode-container" style="margin-top:1.5rem;display:none;"></div>
@@ -455,18 +452,5 @@ qrcodeBtn.onclick = function() {
 };
 </script>
 
-// systeme de messagerie EmailJS
-<script>
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      emailjs.sendForm('service_3exe7ov', 'template_g2u6u5d', this)
-        .then(function() {
-          alert('E-mail envoyé avec succès !');
-        }, function(error) {
-          alert('Erreur : ' + JSON.stringify(error));
-        });
-    });
-  </script>
 </body>
 </html>
