@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', function() {
             backgroundColor: 'rgba(76,205,196,0.2)',
             borderColor: '#4ecdc4',
             pointBackgroundColor: '#ff6b6b',
-            borderWidth: 2
+            borderWidth: 2,
           }]
         },
         options: {
