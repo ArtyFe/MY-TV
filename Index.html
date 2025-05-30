@@ -2,12 +2,18 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio digital de Ntsame Ondo Arty Feriole, cheffe de projet digitale, contrôleuse de Gestion et formatrice à Port-Gentil, Gabon. Découvrez mes projets, compétences et contactez-moi !">
     <title>Arty Feriole - Portfolio Digital</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script>
+    (function() {
+      emailjs.init("vNmke9P5E2EOyP-1r"); // Remplace par ta clé publique EmailJS
+    })();
+  </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -449,5 +455,18 @@ qrcodeBtn.onclick = function() {
 };
 </script>
 
+// systeme de messagerie EmailJS
+<script>
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      emailjs.sendForm('service_3exe7ov', 'template_g2u6u5d', this)
+        .then(function() {
+          alert('E-mail envoyé avec succès !');
+        }, function(error) {
+          alert('Erreur : ' + JSON.stringify(error));
+        });
+    });
+  </script>
 </body>
 </html>
