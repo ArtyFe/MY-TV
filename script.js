@@ -33,10 +33,17 @@ window.addEventListener('DOMContentLoaded', function() {
       new Chart(ctx, {
         type: 'radar',
         data: {
-          labels: ['Gestion de projet', 'Bureautique', 'Marketing digital', 'Formation', 'Créativité', 'Communication'],
+          labels: [
+            'Gestion de projet',
+            'Bureautique',
+            'Marketing digital',
+            'Formation',
+            'Créativité',
+            'Communication'
+          ],
           datasets: [{
             label: 'Compétences',
-            data: [95, 90, 85, 80, 88, 92],
+            data: [90, 90, 90, 90, 90, 90],
             backgroundColor: 'rgba(76,205,196,0.2)',
             borderColor: '#4ecdc4',
             pointBackgroundColor: '#ff6b6b',
@@ -189,7 +196,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ajout du sélecteur de langue
     let langSelect = document.createElement('select');
     langSelect.id = 'chatbot-lang';
-    langSelect.style = 'width:100%;margin-bottom:0.5rem;padding:0.3rem 0.5rem;border-radius:8px;border:1px solid #4ecdc4;font-size:1rem;';
+    langSelect.style = 'width:100%;margin-bottom:0.5rem;padding:0.3rem 0.5rem;border-radius:999px;border:1.5px solid #4ecdc4;font-size:1.08rem;background:linear-gradient(90deg,#fffbe6 60%,#4ecdc4 100%);color:#23272f;font-weight:700;appearance:none;text-align:center;';
+    let defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.disabled = true;
+    defaultOpt.selected = true;
+    defaultOpt.hidden = false;
+    defaultOpt.textContent = 'Langue';
+    langSelect.appendChild(defaultOpt);
     LANGS.forEach(l => {
       let opt = document.createElement('option');
       opt.value = l.code;
@@ -197,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
       langSelect.appendChild(opt);
     });
     windowBox.insertBefore(langSelect, windowBox.children[2]);
-    langSelect.value = navigator.language || 'fr-FR';
+    langSelect.value = '';
 
     // Ajout du bouton ON/OFF
     let powerBtn = document.createElement('button');
@@ -373,3 +387,20 @@ const style = document.createElement('style');
 style.innerHTML = `.typewriter-cursor { display:inline-block; width:1ch; color:#ffd700; animation: blink-cursor 0.7s steps(1) infinite; }
 @keyframes blink-cursor { 0%,100%{opacity:1;} 50%{opacity:0;} }`;
 document.head.appendChild(style);
+
+// Animation flottante au scroll pour les cards de compétences
+function revealSkillCardsOnScroll() {
+  const cards = document.querySelectorAll('.skill-card, .skill-card-3d');
+  const windowHeight = window.innerHeight;
+  cards.forEach((card, i) => {
+    const rect = card.getBoundingClientRect();
+    if (rect.top < windowHeight - 60) {
+      card.classList.add('visible');
+    } else {
+      card.classList.remove('visible');
+    }
+  });
+}
+window.addEventListener('scroll', revealSkillCardsOnScroll);
+window.addEventListener('resize', revealSkillCardsOnScroll);
+document.addEventListener('DOMContentLoaded', revealSkillCardsOnScroll);

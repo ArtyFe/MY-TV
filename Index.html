@@ -243,23 +243,20 @@
 
     <!-- Section KPIs dynamiques -->
     <section class="section kpi-section" aria-label="Chiffres clés" style="background:rgba(255,255,255,0.07);">
-        <div class="container" style="display:flex;flex-wrap:wrap;justify-content:center;gap:2.5rem;">
-            <div class="kpi-card skill-card" style="min-width:180px;">
-                <div style="font-size:2.2rem;color:#4ecdc4;"><i class="fas fa-users"></i></div>
-                <div class="kpi-counter" data-kpi="2">0</div>
-                <div style="font-weight:600;">Clients accompagnés</div>
-            </div>
-            <div class="kpi-card skill-card" style="min-width:180px;">
-                <div style="font-size:2.2rem;color:#ff6b6b;"><i class="fas fa-chalkboard-teacher"></i></div>
-                <div class="kpi-counter" data-kpi="1">0</div>
-                <div style="font-weight:600;">Formations animées</div>
-            </div>
-            <div class="kpi-card skill-card" style="min-width:180px;">
-                <div style="font-size:2.2rem;color:#764ba2;"><i class="fas fa-briefcase"></i></div>
-                <div class="kpi-counter" data-kpi="2">0</div>
-                <div style="font-weight:600;">Projets pilotés</div>
-            </div>
+      <div class="container" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:2.5rem;">
+        <div class="kpi-card skill-card" style="min-width:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div class="kpi-counter" data-kpi="3" style="font-size:2.3rem;font-weight:800;">3</div>
+          <div style="font-weight:600;text-align:center;">Clients accompagnés</div>
         </div>
+        <div class="kpi-card skill-card" style="min-width:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div class="kpi-counter" data-kpi="2" style="font-size:2.3rem;font-weight:800;">2</div>
+          <div style="font-weight:600;text-align:center;">Formations animées</div>
+        </div>
+        <div class="kpi-card skill-card" style="min-width:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div class="kpi-counter" data-kpi="4" style="font-size:2.3rem;font-weight:800;">4</div>
+          <div style="font-weight:600;text-align:center;">Projets pilotés</div>
+        </div>
+      </div>
     </section>
 
     <!-- Section Compétences avec radar Chart.js -->
@@ -395,62 +392,6 @@
     <button id="chatbot-read-selection" style="margin-top:0.5rem;background:#764ba2;color:#fff;border:none;border-radius:8px;padding:0.4rem 0.8rem;font-size:0.98rem;cursor:pointer;width:100%;">Lire le texte sélectionné</button>
   </div>
 </div>
-
-<!-- Bouton Partager et QRCode -->
-<div style="text-align:center;margin:2.5rem 0;">
-  <button id="share-btn" class="btn btn-secondary" style="font-size:1.1rem;padding:0.7em 1.5em;margin-bottom:1.2rem;cursor:pointer;">
-    <i class="fas fa-share-alt"></i> Partager
-  </button>
-  <button id="qrcode-btn" class="btn btn-secondary" style="font-size:1.1rem;padding:0.7em 1.5em;margin-left:1em;cursor:pointer;"></button>
-    <i class="fas fa-qrcode"></i> QRCode
-  </button>
-  <div id="qrcode-container" style="margin-top:1.5rem;display:none;"></div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-<script>
-// Lien de ton portfolio (à adapter si besoin)
-const portfolioUrl = window.location.origin + window.location.pathname;
-// Partage natif navigateur
-const shareBtn = document.getElementById('share-btn');
-if (navigator.share) {
-  shareBtn.onclick = function() {
-    navigator.share({
-      title: document.title,
-      url: portfolioUrl
-    });
-  };
-} else {
-  shareBtn.onclick = function() {
-    navigator.clipboard.writeText(portfolioUrl);
-    shareBtn.innerHTML = '<i class="fas fa-check"></i> Lien copié !';
-    setTimeout(()=>{shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> Partager';}, 2000);
-  };
-}
-// QRCode
-const qrcodeBtn = document.getElementById('qrcode-btn');
-const qrcodeContainer = document.getElementById('qrcode-container');
-qrcodeBtn.onclick = function() {
-  if(qrcodeContainer.style.display==='none'){
-    qrcodeContainer.style.display='block';
-    if(!qrcodeContainer.hasChildNodes()){
-      const qr = new QRious({
-        element: document.createElement('canvas'),
-        value: portfolioUrl,
-        size: 180
-      });
-      qrcodeContainer.appendChild(qr.element);
-      const info = document.createElement('div');
-      info.style.marginTop = '0.7em';
-      info.style.fontSize = '1rem';
-      info.style.color = '#4ecdc4';
-      info.innerText = 'Scannez pour accéder au portfolio';
-      qrcodeContainer.appendChild(info);
-    }
-  }else{
-    qrcodeContainer.style.display='none';
-  }
-};
-</script>
 
 </body>
 </html>
